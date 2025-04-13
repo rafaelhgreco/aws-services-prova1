@@ -16,7 +16,10 @@ def get_images():
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix='uploads/')
     
     # Extraindo as chaves das imagens
-    image_keys = [content['Key'] for content in response.get('Contents', [])]
+    image_keys = [
+    content['Key'] for content in response.get('Contents', [])
+    if content['Key'] != 'uploads/' and content['Key'].lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+    ]
 
     # Gerando URLs assinadas para as imagens
     image_urls = []
