@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Imagens</title>
+</head>
+<body>
+    <h1>Galeria de Imagens</h1>
+    <div id="gallery">
+        <!-- As imagens serão inseridas aqui dinamicamente -->
+    </div>
+
+    <script>
+        // Função para buscar as imagens
+        async function fetchImages() {
+            try {
+                const response = await fetch('/get_images');
+                const images = await response.json();
+
+                const gallery = document.getElementById('gallery');
+
+                // Limpar a galeria antes de adicionar as novas imagens
+                gallery.innerHTML = '';
+
+                // Adiciona cada imagem à galeria
+                images.forEach(imageUrl => {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;  // A URL da imagem
+                    img.alt = 'Imagem do S3';
+                    img.style.width = '200px';  // Ajuste do tamanho da imagem
+                    img.style.margin = '10px';  // Espaçamento entre as imagens
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar as imagens:', error);
+            }
+        }
+
+        // Chama a função quando a página for carregada
+        window.onload = fetchImages;
+    </script>
+</body>
+</html>
