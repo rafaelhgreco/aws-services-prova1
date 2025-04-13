@@ -1,44 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria de Imagens</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria de Boletos - S3</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #0d6efd;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #gallery img {
+      width: 200px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+      color: #777;
+    }
+    form {
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    form input, form button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>Galeria de Imagens</h1>
+  <header>
+    <h1>📂 Galeria de Boletos</h1>
+    <p>Documentos armazenados no Bucket S3</p>
+  </header>
+
+  <main>
+    <section id="upload-section" style="margin-bottom: 40px; text-align:center;">
+      <h2>📤 Enviar novo boleto</h2>
+      <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*,.pdf" required />
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="upload-msg" style="margin-top:10px;"></p>
+    </section>
     <div id="gallery">
-        <!-- As imagens serão inseridas aqui dinamicamente -->
+      <!-- As imagens serão inseridas aqui dinamicamente -->
     </div>
+  </main>
 
-    <script>
-        // Função para buscar as imagens
-        async function fetchImages() {
-            try {
-                const response = await fetch('/get_images');
-                const images = await response.json();
+  <footer>
+    &copy; 2025 - Prova-1 S3 Gallery
+  </footer>
 
-                const gallery = document.getElementById('gallery');
+  <script>
+    // Função para buscar as imagens
+    async function fetchImages() {
+      try {
+        const response = await fetch('/get_images');
+        const images = await response.json();
 
-                // Limpar a galeria antes de adicionar as novas imagens
-                gallery.innerHTML = '';
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
 
-                // Adiciona cada imagem à galeria
-                images.forEach(imageUrl => {
-                    const img = document.createElement('img');
-                    img.src = imageUrl;  // A URL da imagem
-                    img.alt = 'Imagem do S3';
-                    img.style.width = '200px';  // Ajuste do tamanho da imagem
-                    img.style.margin = '10px';  // Espaçamento entre as imagens
-                    gallery.appendChild(img);
-                });
-            } catch (error) {
-                console.error('Erro ao carregar as imagens:', error);
-            }
-        }
+        images.forEach(imageUrl => {
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.alt = 'Imagem do S3';
+          gallery.appendChild(img);
+        });
+      } catch (error) {
+        console.error('Erro ao carregar as imagens:', error);
+      }
+    }
 
-        // Chama a função quando a página for carregada
-        window.onload = fetchImages;
-    </script>
+    window.onload = fetchImages;
+  </script>
+  <script>
+  document.getElementById("upload-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    const fileInput = this.querySelector('input[type="file"]');
+    formData.append("file", fileInput.files[0]);
+
+    const response = await fetch("/upload", {
+      method: "POST",
+      body: formData
+    });
+
+    const result = await response.json();
+    document.getElementById("upload-msg").innerText = result.message;
+    
+    if (response.ok) {
+      fileInput.value = '';
+      fetchImages(); // Recarrega a galeria com o novo arquivo
+    }
+  });
+</script>
 </body>
 </html>
