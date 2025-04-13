@@ -78,12 +78,17 @@ cd flask-s3-app
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python app.py
+python3 app.py
 
 ---
 
 docker build -t flask-s3-app .
 docker run -p 8080:8080 -v ~/.aws:/root/.aws flask-s3-app
+
+---
+
+Se estiver desenvolvendo ou testando a aplicação diretamente no AWS Cloud9.
+    Clique em Preview → Preview Running Application.
 ```
 ## Pipeline CI/CD (GitHub Actions)
 Arquivo: .github/workflows/deploy.yml
