@@ -1,5 +1,5 @@
 
-# Portfólio Técnico: Aplicativo para Armazenamento de Boletos no S3 com Deploy no ECS
+# Aplicativo para Armazenamento de Boletos no S3 com Deploy no ECS
 
 Este projeto consiste em um aplicativo Flask empacotado com Docker, com objetivo de facilitar o armazenamento de boletos bancários em um bucket Amazon S3, promovendo organização, rastreabilidade e segurança para o setor financeiro da empresa.
 
@@ -65,6 +65,32 @@ Essa solução é:
 
 - Bucket com políticas de versionamento e criptografia ativadas.
 
+## Justificativa dos Serviços AWS Utilizados
+### ☁️ Amazon S3 (Simple Storage Service)
+O Amazon S3 foi escolhido para armazenar os boletos gerados pela aplicação devido à sua **alta durabilidade, escalabilidade automática** e **baixo custo por GB armazenado**. Ele é ideal para armazenar arquivos estáticos como PDFs, imagens e documentos, com acesso fácil via API. Além disso:
+- Custo extremamente acessível, sendo possível armazenar centenas de arquivos pagando apenas alguns centavos por mês.
+
+### 🐳 Amazon ECS (Fargate)
+O Amazon ECS com a tecnologia Fargate foi escolhido para executar os containers Docker da aplicação, eliminando a necessidade de gerenciar servidores.
+- **Integração nativa com ECR e CloudWatch**, facilitando deploy e monitoramento.
+
+### 📦 Amazon ECR (Elastic Container Registry)
+O Amazon ECR é o repositório privado de imagens Docker da AWS. Ele foi utilizado para:
+- Armazenar com segurança as imagens da aplicação;
+- Garantir **integração direta com ECS**, facilitando o deploy;
+- Eliminar a dependência de registries públicos como Docker Hub.
+
+### 🛠️ AWS Cloud9
+O Cloud9 foi utilizado como ambiente de desenvolvimento diretamente na nuvem, com as seguintes vantagens:
+- **Pré-configurado com ferramentas AWS e Docker**, economizando tempo de setup;
+- Permite codificação, build e testes sem depender de uma máquina local;
+- Ideal para projetos colaborativos e desenvolvimento remoto.
+
+### 💻 AWS CLI
+A AWS CLI (Command Line Interface) foi utilizada para automatizar comandos no ECR, ECS e S3. Isso possibilita:
+- Deploys e atualizações com scripts;
+- Integração em pipelines CI/CD;
+- Agilidade na configuração de infraestrutura com comandos simples.
 ## Comandos para Clonar e Rodar no AWS Cloud9
 
 ### ▶️ Clonando o repositório:
@@ -88,10 +114,22 @@ docker run -p 8080:8080 -v ~/.aws:/root/.aws flask-s3-app
 ---
 
 Se estiver desenvolvendo ou testando a aplicação diretamente no AWS Cloud9.
-    Clique em Preview → Preview Running Application.
+    - Clique em Preview → Preview Running Application.
+
+flask-s3-app/
+├── main.py                   # Lógica principal da aplicação
+├── templates/
+│   └── index.html            # Template da página
+│
+├── requirements.txt          # Lista de dependências do projeto
+├── Dockerfile                # Dockerfile para empacotar a aplicação
+Git
+├── README.md                 # Documentação do projeto
 ```
 ## Pipeline CI/CD (GitHub Actions)
 Arquivo: .github/workflows/deploy.yml
 
+
 ## Considerações Finais
 Esta aplicação atende plenamente a demanda de organização e rastreabilidade de boletos de forma simples e escalável. Além disso, oferece um ótimo exemplo de aplicação real integrando serviços AWS modernos com boas práticas de DevOps.
+#### Desenvolvimento por Rafael Henrique e Mateus Stringuetti
