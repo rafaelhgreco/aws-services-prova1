@@ -7,7 +7,7 @@ Este projeto consiste em um aplicativo Flask empacotado com Docker, com objetivo
 ## Solução
 Foi desenvolvido um aplicativo web simples, acessível via navegador, que permite upload de boletos PDF diretamente para um bucket S3. 
 
-![Vídeo demonstrativo da solução](https://www.youtube.com/)
+![Vídeo demonstrativo da solução](https://www.youtube.com/watch?v=7zwC2uqqL0I)
 
 Essa solução é:
 
