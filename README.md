@@ -30,7 +30,7 @@ Essa solução é:
 | GitHub Actions   | CI/CD automatizado                                 |
 
 ## Fluxo de Desenvolvimento
-![Diagrama da Arquitetura](https://i.imgur.com/3mG39hE.png)
+![Diagrama da Arquitetura](https://i.imgur.com/LNKs2QT.png)
 ### Desenvolvimento com Cloud9
 - Cloud9 é utilizado para codificar, buildar e testar a aplicação localmente.
 
